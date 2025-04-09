@@ -1,6 +1,6 @@
 import { open } from 'sqlite';
 import sqlite3 from 'sqlite3';
-import { SQLDatabase } from '../types';
+import { SQLDatabase, UserData } from '../types';
 
 export const createDatabase = async (): Promise<SQLDatabase> => {
   const db = await open({
@@ -34,4 +34,16 @@ export const getData = async (db: SQLDatabase) => {
 
 export const insertData = async (db: SQLDatabase, title: string, content: string) => {
   await db.run(`INSERT into tasks (title, content) values (?, ?)`, [title, content]);
+};
+
+export const insertNewUser = async (db: SQLDatabase, username: string, email: string, hashedPassword: string) => {
+  return await db.run(`INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)`, [
+    username,
+    email,
+    hashedPassword,
+  ]);
+};
+
+export const getUserByUsername = async (db: SQLDatabase, username: string): Promise<UserData> => {
+  return (await db.get(`SELECT * FROM users WHERE username = ?`, [username])) as UserData;
 };

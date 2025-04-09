@@ -1,105 +1,35 @@
-import { Box, Button, Divider, Paper, TextField, Typography } from '@mui/material';
-import Task from './components/Task';
-import { useEffect, useState } from 'react';
-
-type TaskData = {
-  id: number;
-  title: string;
-  content: string;
-};
+import { Box, Button } from '@mui/material';
+import TaskView from './components/TaskView';
+import LoginRegistration from './components/LoginRegistration';
+import Cookie from 'js-cookie';
+import { useState } from 'react';
 
 function App() {
-  const [tasks, setTasks] = useState<TaskData[]>([]);
-  const [formInput, setFormInput] = useState({ title: '', content: '' });
+  const [loggedIn, setLoggedIn] = useState(Cookie.get('auth_token') ? true : false);
 
-  const getTasks = async () => {
-    try {
-      const req = await fetch('/api/tasks');
-
-      if (!req.ok) throw new Error(`request failed: ${req.status}`);
-
-      const tasks = await req.json();
-      console.log(tasks);
-      setTasks(tasks);
-    } catch (error) {
-      console.error(error);
-    }
+  const signOut = () => {
+    Cookie.remove('auth_token');
+    Cookie.remove('user_data');
+    setLoggedIn(false);
   };
 
-  const postTask = async () => {
-    try {
-      const { title, content } = formInput;
-
-      if (!title || !content) {
-        return;
-      }
-
-      const req = await fetch('/api/tasks', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, content }),
-      });
-
-      if (!req.ok) throw new Error(`request failed: ${req.status}`);
-
-      setFormInput({ title: '', content: '' });
-      getTasks();
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    getTasks();
-  }, []);
+  const setUserLogInTrue = () => setLoggedIn(true);
 
   return (
-    <Box display={'flex'} justifyContent={'center'} mt={4}>
-      <Paper sx={{ width: '600px' }}>
-        <Box flex={'flex'} flexDirection={'column'} m={1} pt={1} gap={1}>
-          <Typography variant="h4">Create Task</Typography>
+    <Box display={'flex'} justifyContent={'center'} mt={4} gap={2}>
+      <Box width={'350px'}></Box>
 
-          <Box mt={1}>
-            <TextField
-              value={formInput.title}
-              onChange={(e) => setFormInput((prev) => ({ ...prev, title: e.target.value }))}
-              id="title"
-              label="Title"
-              variant="outlined"
-              fullWidth
-            />
-          </Box>
+      <Box width={'600px'}>
+        <TaskView />
+      </Box>
 
-          <Box mt={1}>
-            <TextField
-              value={formInput.content}
-              onChange={(e) => setFormInput((prev) => ({ ...prev, content: e.target.value }))}
-              id="title"
-              label="Content"
-              variant="outlined"
-              fullWidth
-            />
-          </Box>
-
-          <Box display={'flex'} mt={1} justifyContent={'end'}>
-            <Button onClick={postTask} variant="contained">
-              Post
-            </Button>
-          </Box>
-        </Box>
-
-        <Divider />
-
-        <Box flex={'flex'} flexDirection={'column'} m={1} p={1} gap={1}>
-          <Typography variant="h4">Task List</Typography>
-
-          {tasks ? (
-            tasks.map((t, i) => <Task key={i} idx={i + 1} title={t.title} content={t.content}></Task>)
-          ) : (
-            <Box>No tasks :(</Box>
-          )}
-        </Box>
-      </Paper>
+      <Box width={'350px'}>
+        {loggedIn ? (
+          <Button onClick={signOut}>Sign out</Button>
+        ) : (
+          <LoginRegistration setUserLogInTrue={setUserLogInTrue} />
+        )}
+      </Box>
     </Box>
   );
 }
