@@ -37,11 +37,9 @@ export const insertData = async (db: SQLDatabase, title: string, content: string
 };
 
 export const insertNewUser = async (db: SQLDatabase, username: string, email: string, hashedPassword: string) => {
-  return await db.run(`INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)`, [
-    username,
-    email,
-    hashedPassword,
-  ]);
+  return await db.run(
+    `INSERT INTO users (username, email, password_hash) VALUES ('${username}', '${email}', '${hashedPassword}')`
+  );
 };
 
 export const getUserByUsername = async (db: SQLDatabase, username: string): Promise<UserData> => {

@@ -12,7 +12,7 @@ const Task = ({ title, content, idx }: TaskProps) => {
       <Typography variant="h6" fontWeight={'bold'}>
         {idx}. {title}
       </Typography>
-      <Typography variant="body1">{content}</Typography>
+      <Typography variant="body1" component="div" dangerouslySetInnerHTML={{ __html: content }}></Typography>
     </Box>
   );
 };

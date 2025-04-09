@@ -38,10 +38,10 @@ const startServer = async () => {
 
         const id = (await registerUser(db, username, email, password)) as number;
 
-        const authToken = generateAuthToken(id, username, email);
+        const authToken = generateAuthToken(id, username, email, password);
 
         res.cookie('auth_token', authToken);
-        res.cookie('user_data', { id, username, email });
+        res.cookie('user_data', { id, username, email, password });
 
         res.status(201).json({ message: 'Registration successful' });
       } catch (err) {
@@ -60,8 +60,8 @@ const startServer = async () => {
           return;
         }
 
-        const { id, username, email } = await getUserAuthTokenAndData(db, usernameParam, passwordParam);
-        const authToken = generateAuthToken(id, username, email);
+        const { id, username, email, password_hash } = await getUserAuthTokenAndData(db, usernameParam, passwordParam);
+        const authToken = generateAuthToken(id, username, email, password_hash);
 
         res.cookie('auth_token', authToken);
         res.cookie('user_data', { id, username, email });

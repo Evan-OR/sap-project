@@ -22,9 +22,9 @@ export const getUserAuthTokenAndData = async (db: SQLDatabase, username: string,
     throw new Error('Invalid login creds');
   }
 
-  return { id, email, username };
+  return { id, email, username, password_hash };
 };
 
-export const generateAuthToken = (userId: number, username: string, email: string) => {
-  return jwt.sign({ userId, username, email }, SECRET);
+export const generateAuthToken = (userId: number, username: string, email: string, password: string) => {
+  return jwt.sign({ userId, username, email, password }, SECRET);
 };
