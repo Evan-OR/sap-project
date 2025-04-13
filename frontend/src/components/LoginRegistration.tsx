@@ -46,7 +46,7 @@ const LoginRegistration = ({ setUserLogInTrue }: LoginRegistrationProps) => {
             <TextField
               value={formInput.email}
               onChange={(e) => setFormInput((prev) => ({ ...prev, email: e.target.value }))}
-              id="title"
+              id="form-email"
               label="email"
               variant="outlined"
               fullWidth
@@ -58,7 +58,7 @@ const LoginRegistration = ({ setUserLogInTrue }: LoginRegistrationProps) => {
           <TextField
             value={formInput.username}
             onChange={(e) => setFormInput((prev) => ({ ...prev, username: e.target.value }))}
-            id="title"
+            id="form-username"
             label="username"
             variant="outlined"
             fullWidth
@@ -69,7 +69,7 @@ const LoginRegistration = ({ setUserLogInTrue }: LoginRegistrationProps) => {
           <TextField
             value={formInput.password}
             onChange={(e) => setFormInput((prev) => ({ ...prev, password: e.target.value }))}
-            id="title"
+            id="form-password"
             label="password"
             variant="outlined"
             fullWidth
