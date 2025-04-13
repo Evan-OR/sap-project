@@ -62,7 +62,7 @@ const TaskView = () => {
           <TextField
             value={formInput.title}
             onChange={(e) => setFormInput((prev) => ({ ...prev, title: e.target.value }))}
-            id="title"
+            id="task-title"
             label="Title"
             variant="outlined"
             fullWidth
@@ -73,7 +73,7 @@ const TaskView = () => {
           <TextField
             value={formInput.content}
             onChange={(e) => setFormInput((prev) => ({ ...prev, content: e.target.value }))}
-            id="title"
+            id="task-content"
             label="Content"
             variant="outlined"
             fullWidth
