@@ -7,9 +7,7 @@ const SALT_ROUNDS = 10;
 const SECRET = process.env.SECRET as string;
 
 export const registerUser = async (db: SQLDatabase, username: string, email: string, password: string) => {
-  const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
-
-  const { lastID } = await insertNewUser(db, username, email, hashedPassword);
+  const { lastID } = await insertNewUser(db, username, email, password);
   return lastID;
 };
 
