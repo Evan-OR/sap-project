@@ -77,6 +77,14 @@ const startServer = async () => {
       }
     });
 
+    app.use((req, res, next) => {
+      res.setHeader('X-Frame-Options', 'DENY');
+      res.setHeader('Content-Security-Policy', "default-src 'self'");
+      res.setHeader('X-Content-Type-Options', 'nosniff');
+      res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+      next();
+    });
+
     app.listen(3000, () => {
       console.log('Running on http://localhost:3000');
     });
